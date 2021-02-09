@@ -1,14 +1,16 @@
 package commands
 
 import streams.Stream
+import kotlin.NotImplementedError
 
-open class Command(ins: Stream, out: Stream, err: Stream, args: Map<String, String>) {
-    val input: Stream = ins
-    val output: Stream = out
-    val error: Stream = err
-    val arguments: Map<String, String> = args
-
+open class Command(
+    val inputStream: Stream,
+    val outputStream: Stream,
+    val errorStream: Stream,
+    val args: List<String>,
+    val kwargs: Map<String, String>,
+) {
     open fun execute(): Int {
-        return 0
+        throw NotImplementedError()
     }
 }

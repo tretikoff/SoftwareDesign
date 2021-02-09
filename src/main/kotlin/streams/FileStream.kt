@@ -2,14 +2,16 @@ package streams
 
 import java.io.File
 
-open class FileStream(filename: String): Stream() {
+open class FileStream(filename: String) : Stream() {
     private val file = File(filename);
+    private val br = file.inputStream().bufferedReader()
     override fun read(): String? {
-        val bs = file.inputStream().readAllBytes()
-        return String(bs)
+        return br.readLine()
     }
 
-    override fun write(statement: String) {
-        file.outputStream().write(statement.toByteArray());
+    override fun write(statement: String?) {
+        if (statement != null) {
+            file.outputStream().write(statement.toByteArray());
+        }
     }
 }

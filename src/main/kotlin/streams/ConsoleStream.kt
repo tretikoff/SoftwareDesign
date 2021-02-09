@@ -5,7 +5,7 @@ open class ConsoleStream: Stream() {
         return readLine()
     }
 
-    override fun write(statement: String) {
+    override fun write(statement: String?) {
         print(statement)
     }
 }
