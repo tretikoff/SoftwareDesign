@@ -12,11 +12,15 @@ private val descriptors: List<Stream> = listOf(consoleStream, consoleStream, con
 private val stdin = descriptors[0]
 private val stdout = descriptors[1]
 private val stderr = descriptors[2]
+private var variables: MutableMap<String, String> = mutableMapOf()
 
 fun main(args: Array<String>) {
     while (true) {
         stdout.write("$")
-        val statements = stdin.read()!!
+        var statements = stdin.read()!!
+        if (trySetupVariable(statements)) continue
+        statements = substituteVariables(statements)
+
         try {
             val statementsList: Queue<String> = LinkedList(statements.split("|"))
             logger.finest("Statements was read from the terminal: $statementsList")
@@ -45,4 +49,21 @@ fun executePipedStatements(statementsList: Queue<String>) {
     logger.finest("Executing last command: ${statementsList.peek().trim()}")
     lstPipe = fstPipe
     CommandBuilder.build(statementsList.poll().trim(), lstPipe, stdout, stderr).execute()
+}
+
+fun trySetupVariable(statement: String): Boolean {
+    val tokens = statement.split("=")
+    if (tokens.size != 2) return false
+    variables[tokens[0]] = tokens[1]
+    return true
+}
+
+fun substituteVariables(statement: String): String {
+    var replaced = statement
+    while (replaced.contains("$")) {
+        val regex = "\$\\w+".toRegex()
+        val match = regex.find(replaced)!!
+        replaced = replaced.replace(regex, variables[match.value.drop(1)] ?: "")
+    }
+    return replaced
 }
