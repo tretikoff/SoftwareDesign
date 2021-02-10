@@ -14,9 +14,6 @@ private val stdout = descriptors[1]
 private val stderr = descriptors[2]
 
 fun main(args: Array<String>) {
-    //TODO добавить переменные
-    //TODO добавить тесты
-    //TODO добавить кавычки и скобочки
     while (true) {
         stdout.write("$")
         val statements = stdin.read()!!
@@ -27,22 +24,25 @@ fun main(args: Array<String>) {
                 val c = CommandBuilder.build(statements, stdin, stdout, stderr)
                 c.execute()
             } else {
-                //TODO move to some class or function
-                var fstPipe = PipeStream()
-                var lstPipe = PipeStream()
-
-                CommandBuilder.build(statementsList.poll().trim(), stdin, fstPipe, stderr).execute()
-                while (statementsList.size > 1) {
-                    CommandBuilder.build(statementsList.poll().trim(), fstPipe, lstPipe, stderr).execute()
-                    fstPipe = lstPipe
-                    lstPipe = PipeStream()
-                }
-                logger.finest("Executing last command: ${statementsList.peek().trim()}")
-                lstPipe = fstPipe
-                CommandBuilder.build(statementsList.poll().trim(), lstPipe, stdout, stderr).execute()
+                executePipedStatements(statementsList)
             }
         } catch (e: Exception) {
             descriptors[2].writeLine(e.localizedMessage)
         }
     }
+}
+
+fun executePipedStatements(statementsList: Queue<String>) {
+    var fstPipe = PipeStream()
+    var lstPipe = PipeStream()
+
+    CommandBuilder.build(statementsList.poll().trim(), stdin, fstPipe, stderr).execute()
+    while (statementsList.size > 1) {
+        CommandBuilder.build(statementsList.poll().trim(), fstPipe, lstPipe, stderr).execute()
+        fstPipe = lstPipe
+        lstPipe = PipeStream()
+    }
+    logger.finest("Executing last command: ${statementsList.peek().trim()}")
+    lstPipe = fstPipe
+    CommandBuilder.build(statementsList.poll().trim(), lstPipe, stdout, stderr).execute()
 }
