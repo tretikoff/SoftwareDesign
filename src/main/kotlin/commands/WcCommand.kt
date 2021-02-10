@@ -29,7 +29,7 @@ class WcCommand(ins: Stream, out: Stream, err: Stream, args: List<String>, kwarg
         while (true) {
             val b = stream.read()
             if (b == null) {
-                outputStream.writeLine("${l}\t${w}\t${c}")
+                outputStream.writeLine("$l\t$w\t$c")
                 return
             }
             c += b.length
