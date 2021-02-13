@@ -10,12 +10,12 @@ class PipeStream : Stream() {
         if (buffer.isNotEmpty()) {
             read = buffer.poll()
         }
-        logger.info("reading $read")
+        logger.finest("reading $read from $buffer")
         return read
     }
 
     override fun write(statement: String?) {
-        logger.info("writing $statement")
+        logger.finest("writing $statement")
         if (statement == null) return
         var tokens = statement.split("\n")
         if (tokens.isEmpty()) tokens = listOf(statement)

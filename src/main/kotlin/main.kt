@@ -4,20 +4,22 @@ import java.lang.Exception
 import java.util.*
 import java.util.logging.Logger
 
-private val consoleStream = ConsoleStream()
+private val consoleStream: Stream = ConsoleStream()
 
 private val logger = Logger.getAnonymousLogger()
 
-private val descriptors: List<Stream> = listOf(consoleStream, consoleStream, consoleStream)
-private val stdin = descriptors[0]
-private val stdout = descriptors[1]
-private val stderr = descriptors[2]
+private val descriptors = mutableListOf(consoleStream, consoleStream, consoleStream)
+var stdin = descriptors[0]
+var stdout = descriptors[1]
+var stderr = descriptors[2]
+var inviteSymb = "$"
 private var variables: MutableMap<String, String> = mutableMapOf()
 
-fun main(args: Array<String>) {
+fun main() {
     while (true) {
-        stdout.write("$")
-        var statements = stdin.read()!!
+        stdout.write(inviteSymb)
+        var statements = stdin.read()
+        if (statements == null) break
         if (trySetupVariable(statements)) continue
         statements = substituteVariables(statements)
 
@@ -54,16 +56,20 @@ fun executePipedStatements(statementsList: Queue<String>) {
 fun trySetupVariable(statement: String): Boolean {
     val tokens = statement.split("=")
     if (tokens.size != 2) return false
-    variables[tokens[0]] = tokens[1]
+    val name = tokens[0]
+    val value = tokens[1]
+    logger.finest("setting variable $name with value $value in $statement")
+    variables[name] = value
     return true
 }
 
 fun substituteVariables(statement: String): String {
     var replaced = statement
-    while (replaced.contains("$")) {
-        val regex = "\$\\w+".toRegex()
-        val match = regex.find(replaced)!!
-        replaced = replaced.replace(regex, variables[match.value.drop(1)] ?: "")
+    while (true) {
+        val regex = "\\$\\w+".toRegex()
+        val match = regex.find(replaced) ?: return replaced
+        val replacement = variables[match.value.drop(1)] ?: ""
+        logger.finest("replacing ${match.value} with $replacement in $statement")
+        replaced = replaced.replace(regex, replacement)
     }
-    return replaced
 }

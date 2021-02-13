@@ -30,6 +30,7 @@ class CatCommand(ins: Stream, out: Stream, err: Stream, args: List<String>, kwar
     private fun printToOutput(stream: Stream) {
         var v = stream.read()
         while (v != null) {
+            logger.finest("cat writing $v")
             outputStream.writeLine(v)
             v = stream.read()
         }
