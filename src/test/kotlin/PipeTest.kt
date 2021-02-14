@@ -1,6 +1,6 @@
 import org.junit.Test
 
-class PipeTest: BashTest() {
+class PipeTest : BashTest() {
 
     @Test
     fun secondTest() {

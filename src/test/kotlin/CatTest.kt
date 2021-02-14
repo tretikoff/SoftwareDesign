@@ -1,6 +1,6 @@
 import org.junit.Test
 
-class CatTest: BashTest() {
+class CatTest : BashTest() {
 
     @Test
     fun `First test`() {

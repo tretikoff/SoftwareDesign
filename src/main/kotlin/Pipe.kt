@@ -1,2 +1,1 @@
-class Pipe {
-}
+class Pipe

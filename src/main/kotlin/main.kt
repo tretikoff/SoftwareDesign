@@ -3,7 +3,6 @@ import streams.Stream
 import java.lang.Exception
 import java.util.*
 import java.util.logging.Logger
-
 private val consoleStream: Stream = ConsoleStream()
 
 private val logger = Logger.getAnonymousLogger()
@@ -15,7 +14,7 @@ var stderr = descriptors[2]
 var inviteSymb = "$"
 private var variables: MutableMap<String, String> = mutableMapOf()
 
-fun main() {
+fun main(args: Array<String>) {
     while (true) {
         stdout.write(inviteSymb)
         var statements = stdin.read()

@@ -6,7 +6,13 @@ import streams.Stream
 import java.io.FileNotFoundException
 import java.util.logging.Logger
 
-class CatCommand(ins: Stream, out: Stream, err: Stream, args: List<String>, kwargs: Map<String, String>) :
+class CatCommand(
+    ins: Stream,
+    out: Stream,
+    err: Stream,
+    args: List<String>,
+    kwargs: Map<String, String>
+) :
     Command(ins, out, err, args, kwargs) {
     private val logger = Logger.getLogger(CatCommand::class.java.name)
     override fun execute(): Int {

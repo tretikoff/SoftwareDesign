@@ -1,6 +1,6 @@
 package streams
 
-open class ConsoleStream: Stream() {
+open class ConsoleStream : Stream() {
     override fun read(): String? {
         return readLine()
     }

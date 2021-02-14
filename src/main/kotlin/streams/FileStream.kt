@@ -3,7 +3,7 @@ package streams
 import java.io.File
 
 open class FileStream(filename: String) : Stream() {
-    private val file = File(filename);
+    private val file = File(filename)
     private val br = file.inputStream().bufferedReader()
     override fun read(): String? {
         return br.readLine()
@@ -11,7 +11,7 @@ open class FileStream(filename: String) : Stream() {
 
     override fun write(statement: String?) {
         if (statement != null) {
-            file.outputStream().write(statement.toByteArray());
+            file.outputStream().write(statement.toByteArray())
         }
     }
 }

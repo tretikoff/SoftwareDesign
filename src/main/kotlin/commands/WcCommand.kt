@@ -5,7 +5,13 @@ import streams.FileStream
 import streams.Stream
 import java.io.FileNotFoundException
 
-class WcCommand(ins: Stream, out: Stream, err: Stream, args: List<String>, kwargs: Map<String, String>) :
+class WcCommand(
+    ins: Stream,
+    out: Stream,
+    err: Stream,
+    args: List<String>,
+    kwargs: Map<String, String>
+) :
     Command(ins, out, err, args, kwargs) {
     override fun execute(): Int {
         for (filename in args) {

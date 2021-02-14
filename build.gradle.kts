@@ -22,7 +22,7 @@ dependencies {
 val outputDir = "${project.buildDir}/reports/ktlint/"
 val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
 
-val ktlintCheck by tasks.creating(JavaExec::class) {
+val lint by tasks.creating(JavaExec::class) {
     inputs.files(inputFiles)
     outputs.dir(outputDir)
 
@@ -32,7 +32,7 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
     args = listOf("src/**/*.kt")
 }
 
-val ktlintFormat by tasks.creating(JavaExec::class) {
+val format by tasks.creating(JavaExec::class) {
     inputs.files(inputFiles)
     outputs.dir(outputDir)
 
@@ -42,22 +42,11 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     args = listOf("-F", "src/**/*.kt")
 }
 
-open class GreetingTask : DefaultTask() {
-    @TaskAction
-    fun greet() {
-        println("hello from GreetingTask")
-    }
-}
-
-// Create a task using the task type
-tasks.register<GreetingTask>("hello")
-
 tasks.test {
     useJUnit()
 }
 
-
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 

@@ -1,12 +1,11 @@
 import java.io.File
 
-
 open class BashTest {
     val fileContent = listOf("first line", "second line", "", "fourth line")
     val tempFile = File.createTempFile("test", "")
 
     init {
-
+        inviteSymb = ""
         stdin = PipeStream()
         stdout = PipeStream()
         stderr = PipeStream()
