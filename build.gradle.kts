@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val ktlint by configurations.creating
 
 plugins {
@@ -41,9 +42,20 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     args = listOf("-F", "src/**/*.kt")
 }
 
+open class GreetingTask : DefaultTask() {
+    @TaskAction
+    fun greet() {
+        println("hello from GreetingTask")
+    }
+}
+
+// Create a task using the task type
+tasks.register<GreetingTask>("hello")
+
 tasks.test {
     useJUnit()
 }
+
 
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
