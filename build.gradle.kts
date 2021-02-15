@@ -32,6 +32,17 @@ val lint by tasks.creating(JavaExec::class) {
     args = listOf("src/**/*.kt")
 }
 
+val file: String by project
+val execute by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+    if (project.hasProperty("file")) {
+        args = mutableListOf(file)
+    }
+    main = "MainKt"
+    classpath = sourceSets["main"].runtimeClasspath
+}
+
 val format by tasks.creating(JavaExec::class) {
     inputs.files(inputFiles)
     outputs.dir(outputDir)
