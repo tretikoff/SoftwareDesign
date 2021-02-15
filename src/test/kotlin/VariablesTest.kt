@@ -6,7 +6,7 @@ class VariablesTest : BashTest() {
     fun testVariableSet() {
         stdin.writeLine("var=test")
         stdin.writeLine("cat \$var")
-        main()
+        main(emptyArray())
         for (line in fileContent) {
             assert(stdout.read() == line)
         }

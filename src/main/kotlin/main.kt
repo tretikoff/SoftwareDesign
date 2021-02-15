@@ -1,4 +1,5 @@
 import streams.ConsoleStream
+import streams.FileStream
 import streams.Stream
 import java.lang.Exception
 import java.util.*
@@ -15,6 +16,10 @@ var inviteSymb = "$"
 private var variables: MutableMap<String, String> = mutableMapOf()
 
 fun main(args: Array<String>) {
+    if (args.isNotEmpty()) {
+        stdin = FileStream(args[0])
+        descriptors[0] = stdin
+    }
     while (true) {
         stdout.write(inviteSymb)
         var statements = stdin.read()
