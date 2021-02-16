@@ -6,6 +6,10 @@ import streams.Stream
 import java.io.FileNotFoundException
 import java.util.logging.Logger
 
+/**
+ * The cat utility shall read files in sequence and shall write their contents
+ * to the standard output in the same sequence.
+ */
 class CatCommand(
     ins: Stream,
     out: Stream,

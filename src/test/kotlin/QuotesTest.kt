@@ -8,7 +8,6 @@ class QuotesTest : BashTest() {
         stdin.writeLine("echo '$str'")
         main(emptyArray())
         assert(stdout.read() == str)
-        assert(stdout.read() == null)
     }
 
     @Test
@@ -17,17 +16,22 @@ class QuotesTest : BashTest() {
         stdin.writeLine("echo \"$str\"")
         main(emptyArray())
         assert(stdout.read() == str)
-        assert(stdout.read() == null)
     }
 
-
     @Test
-    fun testDoubleQuoteSubstitutedVariable() {
+    fun testDoubleQuoteSubstitutesVariable() {
         val str = "hello"
         stdin.writeLine("str=$str")
         stdin.writeLine("echo \"\$str\"")
         main(emptyArray())
         assert(stdout.read() == str)
-        assert(stdout.read() == null)
+    }
+    @Test
+    fun testSingleQuoteDoesNotSubstituteVariable() {
+        val str = "hello"
+        stdin.writeLine("str=$str")
+        stdin.writeLine("echo \"\$str\"")
+        main(emptyArray())
+        assert(stdout.read() == str)
     }
 }

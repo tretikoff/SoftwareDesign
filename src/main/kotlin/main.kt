@@ -12,6 +12,7 @@ import java.util.logging.Logger
 private val consoleStream: Stream = ConsoleStream()
 
 private val logger = Logger.getAnonymousLogger()
+var exitOnException = false
 
 private val descriptors = mutableListOf(consoleStream, consoleStream, consoleStream)
 var stdin = descriptors[0]
@@ -34,7 +35,7 @@ fun main(args: Array<String>) {
         if (trySetupVariable(statement)) continue
         val statements = mutableListOf<Word>()
         for (x in splitByQuotes(statement)) {
-            if (x.quotationType != QuotationType.DoubleQuoted) {
+            if (x.quotationType != QuotationType.SingleQuoted) {
                 x.substituteVariables(variables)
             }
             statements.addAll(splitBySpaces(x.value))
@@ -42,11 +43,12 @@ fun main(args: Array<String>) {
 
         try {
             val pipeIndexes: MutableList<Int> = mutableListOf()
-            for (i: Int in 0..statements.size) {
+            for (i: Int in 0 until statements.size) {
                 if (statements[i].isPipe()) {
-                    val hasPreviousCommandPipe = if (pipeIndexes.isEmpty()) false else pipeIndexes.last() == i - 1
-                    if(i == 0 || hasPreviousCommandPipe) {
-                        throw Exception("syntax error near unexpected token `|`")
+                    val hasPreviousCommandPipe =
+                        pipeIndexes.isNotEmpty() && pipeIndexes.last() == i - 1
+                    if (i == 0 || hasPreviousCommandPipe) {
+                        throw Exception("`|`")
                     }
                     pipeIndexes.add(i)
                 }
@@ -58,7 +60,9 @@ fun main(args: Array<String>) {
                 executePipedStatements(statements, pipeIndexes)
             }
         } catch (e: Exception) {
+            logger.severe(e.localizedMessage)
             stderr.writeLine(e.localizedMessage)
+            if (exitOnException) throw e
         }
     }
 }

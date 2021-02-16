@@ -1,16 +1,16 @@
 package commands
 
 import streams.Stream
-import kotlin.NotImplementedError
 
-open class Command(
+/**
+ * Abstract command, which takes three streams, list of args and map of named args
+ */
+abstract class Command(
     val inputStream: Stream,
     val outputStream: Stream,
     val errorStream: Stream,
     val args: List<String>,
     val kwargs: Map<String, String>,
 ) {
-    open fun execute(): Int {
-        throw NotImplementedError()
-    }
+    abstract fun execute(): Int
 }

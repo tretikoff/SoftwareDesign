@@ -10,6 +10,5 @@ class VariablesTest : BashTest() {
         for (line in fileContent) {
             assert(stdout.read() == line)
         }
-//        assert(stdout.empty())
     }
 }

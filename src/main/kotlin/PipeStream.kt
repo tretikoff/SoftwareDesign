@@ -2,6 +2,9 @@ import streams.Stream
 import java.util.*
 import java.util.logging.Logger
 
+/**
+ * Stream in which information is stored until it gets read
+ */
 class PipeStream : Stream() {
     private var buffer: ArrayDeque<String> = ArrayDeque()
     private val logger = Logger.getLogger(PipeStream::class.java.name)

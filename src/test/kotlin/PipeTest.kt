@@ -1,9 +1,12 @@
 import org.junit.Test
 
 class PipeTest : BashTest() {
-
     @Test
-    fun secondTest() {
-        print("Hello, JUnit5!")
+    fun testTwoCommandsPipe() {
+        stdin.writeLine("cat test | cat")
+        main(emptyArray())
+        for (line in fileContent) {
+            assert(stdout.read() == line)
+        }
     }
 }

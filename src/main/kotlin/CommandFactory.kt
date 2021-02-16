@@ -1,8 +1,11 @@
 import commands.*
+import exceptions.CommandNotFoundException
 import streams.Stream
 import words.Word
-import java.lang.Exception
 
+/**
+ * Creates command by the first word token and sends the other tokens as arguments
+ */
 class CommandFactory {
     companion object {
         fun build(words: List<Word>, ins: Stream, outs: Stream, errs: Stream): Command? {
@@ -14,7 +17,7 @@ class CommandFactory {
                 "echo" -> EchoCommand(ins, outs, errs, tokens.drop(1), mapOf())
                 "pwd" -> PwdCommand(ins, outs, errs, tokens.drop(1), mapOf())
                 "wc" -> WcCommand(ins, outs, errs, tokens.drop(1), mapOf())
-                else -> throw Exception((tokens[0]) + ": command not found")
+                else -> throw CommandNotFoundException(tokens[0])
             }
         }
     }
