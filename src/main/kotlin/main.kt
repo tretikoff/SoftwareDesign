@@ -1,9 +1,14 @@
 import streams.ConsoleStream
 import streams.FileStream
 import streams.Stream
+import words.QuotationType
+import words.Word
+import words.splitByQuotes
+import words.splitBySpaces
 import java.lang.Exception
 import java.util.*
 import java.util.logging.Logger
+
 private val consoleStream: Stream = ConsoleStream()
 
 private val logger = Logger.getAnonymousLogger()
@@ -15,6 +20,9 @@ var stderr = descriptors[2]
 var inviteSymb = "$"
 private var variables: MutableMap<String, String> = mutableMapOf()
 
+/**
+ * The main flow of bash
+ */
 fun main(args: Array<String>) {
     if (args.isNotEmpty()) {
         stdin = FileStream(args[0])
@@ -22,42 +30,63 @@ fun main(args: Array<String>) {
     }
     while (true) {
         stdout.write(inviteSymb)
-        var statements = stdin.read()
-        if (statements == null) break
-        if (trySetupVariable(statements)) continue
-        statements = substituteVariables(statements)
+        val statement = stdin.read() ?: break
+        if (trySetupVariable(statement)) continue
+        val statements = mutableListOf<Word>()
+        for (x in splitByQuotes(statement)) {
+            if (x.quotationType != QuotationType.DoubleQuoted) {
+                x.substituteVariables(variables)
+            }
+            statements.addAll(splitBySpaces(x.value))
+        }
 
         try {
-            val statementsList: Queue<String> = LinkedList(statements.split("|"))
-            logger.finest("Statements was read from the terminal: $statementsList")
-            if (statementsList.size == 1) {
-                val c = CommandBuilder.build(statements, stdin, stdout, stderr)
-                c.execute()
+            val pipeIndexes: MutableList<Int> = mutableListOf()
+            for (i: Int in 0..statements.size) {
+                if (statements[i].isPipe()) {
+                    val hasPreviousCommandPipe = if (pipeIndexes.isEmpty()) false else pipeIndexes.last() == i - 1
+                    if(i == 0 || hasPreviousCommandPipe) {
+                        throw Exception("syntax error near unexpected token `|`")
+                    }
+                    pipeIndexes.add(i)
+                }
+            }
+            if (pipeIndexes.size == 0) {
+                val c = CommandFactory.build(statements, stdin, stdout, stderr)
+                c?.execute()
             } else {
-                executePipedStatements(statementsList)
+                executePipedStatements(statements, pipeIndexes)
             }
         } catch (e: Exception) {
-            descriptors[2].writeLine(e.localizedMessage)
+            stderr.writeLine(e.localizedMessage)
         }
     }
 }
 
-fun executePipedStatements(statementsList: Queue<String>) {
+/**
+ * Executes piped commands one by one. Redirects previous command's output to the next command
+ */
+fun executePipedStatements(statements: List<Word>, pipeIndexes: List<Int>) {
     var fstPipe = PipeStream()
     var lstPipe = PipeStream()
 
-    CommandBuilder.build(statementsList.poll().trim(), stdin, fstPipe, stderr).execute()
-    while (statementsList.size > 1) {
-        CommandBuilder.build(statementsList.poll().trim(), fstPipe, lstPipe, stderr).execute()
+    var curr = 0
+    var statement = statements.subList(0, pipeIndexes[curr])
+    CommandFactory.build(statement, stdin, fstPipe, stderr)?.execute()
+    while (curr < pipeIndexes.size - 1) {
+        statement = statements.subList(pipeIndexes[curr], pipeIndexes[curr + 1])
+        CommandFactory.build(statement, fstPipe, lstPipe, stderr)?.execute()
         fstPipe = lstPipe
         lstPipe = PipeStream()
+        curr++
     }
-    logger.finest("Executing last command: ${statementsList.peek().trim()}")
+    statement = statements.subList(0, pipeIndexes[curr])
     lstPipe = fstPipe
-    CommandBuilder.build(statementsList.poll().trim(), lstPipe, stdout, stderr).execute()
+    logger.finest("Executing last command: ${statements.joinToString(" ")}")
+    CommandFactory.build(statement, lstPipe, stdout, stderr)?.execute()
 }
 
-fun trySetupVariable(statement: String): Boolean {
+private fun trySetupVariable(statement: String): Boolean {
     val tokens = statement.split("=")
     if (tokens.size != 2) return false
     val name = tokens[0]
@@ -65,15 +94,4 @@ fun trySetupVariable(statement: String): Boolean {
     logger.finest("setting variable $name with value $value in $statement")
     variables[name] = value
     return true
-}
-
-fun substituteVariables(statement: String): String {
-    var replaced = statement
-    while (true) {
-        val regex = "\\$\\w+".toRegex()
-        val match = regex.find(replaced) ?: return replaced
-        val replacement = variables[match.value.drop(1)] ?: ""
-        logger.finest("replacing ${match.value} with $replacement in $statement")
-        replaced = replaced.replace(regex, replacement)
-    }
 }
