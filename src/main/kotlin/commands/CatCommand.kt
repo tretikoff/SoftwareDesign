@@ -14,10 +14,9 @@ class CatCommand(
     ins: Stream,
     out: Stream,
     err: Stream,
-    args: List<String>,
-    kwargs: Map<String, String>
+    args: MutableList<String>,
 ) :
-    Command(ins, out, err, args, kwargs) {
+    Command(ins, out, err, args) {
     private val logger = Logger.getLogger(CatCommand::class.java.name)
     override fun execute(): Int {
         logger.finest("Running cat with arguments $args")
@@ -27,7 +26,6 @@ class CatCommand(
                     val stream = FileStream(filename)
                     printToOutput(stream)
                 } catch (e: FileNotFoundException) {
-                    logger.warning(e.message)
                     throw NoSuchFileOrDirectoryException("cat", filename)
                 }
             }

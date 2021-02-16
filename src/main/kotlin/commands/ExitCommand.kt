@@ -18,9 +18,8 @@ class ExitCommand(
     ins: Stream,
     out: Stream,
     err: Stream,
-    args: List<String>,
-    kwargs: Map<String, String>
-) : Command(ins, out, err, args, kwargs) {
+    args: MutableList<String>,
+) : Command(ins, out, err, args) {
     override fun execute(): Int {
         exitProcess(
             if (args.isNotEmpty()) {

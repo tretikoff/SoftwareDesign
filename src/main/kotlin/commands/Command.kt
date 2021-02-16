@@ -9,8 +9,8 @@ abstract class Command(
     val inputStream: Stream,
     val outputStream: Stream,
     val errorStream: Stream,
-    val args: List<String>,
-    val kwargs: Map<String, String>,
+    val args: MutableList<String>,
 ) {
     abstract fun execute(): Int
+    var flags: MutableMap<String, Boolean> = mutableMapOf()
 }

@@ -5,6 +5,7 @@ open class BashTest {
     val tempFile = File.createTempFile("test", "")
 
     init {
+        exitOnException = true
         inviteSymb = ""
         stdin = PipeStream()
         stdout = PipeStream()
@@ -13,7 +14,5 @@ open class BashTest {
         for (line in fileContent) {
             tempFile.writeText(line)
         }
-        val txt = tempFile.readText()
-        println("reading $txt")
     }
 }

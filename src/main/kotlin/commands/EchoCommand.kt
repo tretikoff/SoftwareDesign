@@ -10,10 +10,9 @@ class EchoCommand(
     ins: Stream,
     out: Stream,
     err: Stream,
-    args: List<String>,
-    kwargs: Map<String, String>
+    args: MutableList<String>,
 ) :
-    Command(ins, out, err, args, kwargs) {
+    Command(ins, out, err, args) {
     override fun execute(): Int {
         outputStream.writeLine(args.joinToString(separator = " "))
         return 0

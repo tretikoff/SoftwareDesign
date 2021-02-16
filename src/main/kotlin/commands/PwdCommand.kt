@@ -10,10 +10,9 @@ class PwdCommand(
     ins: Stream,
     out: Stream,
     err: Stream,
-    args: List<String>,
-    kwargs: Map<String, String>
+    args: MutableList<String>,
 ) :
-    Command(ins, out, err, args, kwargs) {
+    Command(ins, out, err, args) {
     override fun execute(): Int {
         val path = System.getProperty("user.dir")
         outputStream.writeLine(path)
