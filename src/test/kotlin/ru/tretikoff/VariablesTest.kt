@@ -1,14 +1,17 @@
-import org.junit.Test
+package ru.tretikoff
+
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class VariablesTest : BashTest() {
 
     @Test
-    fun testVariableSet() {
+    fun `set variable`() {
         stdin.writeLine("var=test")
         stdin.writeLine("cat \$var")
-        main(emptyArray())
+        main()
         for (line in fileContent) {
-            assert(stdout.read() == line)
+            assertEquals(line, stdout.read())
         }
     }
 }

@@ -25,12 +25,11 @@
 - [x] exit - выходит из интерпретатора
 
 ### Скрипты
-- [x] `gradle build` для компиляции проекта
-- [x] `gradle run` для запуска коммандной строки
-- [x] `gradle execute -Pfile="filename"` для запуска внешнего процесса из файла
-- [x] `gradle test` для запуска тестов
-- [x] `gradle lint` для запуска линтера
-- [x] `gradle format` для запуска форматирования кода
+- [x] `./gradlew build` для компиляции проекта
+- [x] `./gradlew run --console=plain` для запуска коммандной строки
+- [x] `./gradlew test` для запуска тестов
+- [x] `./gradlew lint` для запуска линтера
+- [x] `./gradlew format` для запуска форматирования кода
 
 Используемый линтер - [ktlint](https://github.com/pinterest/ktlint).
 

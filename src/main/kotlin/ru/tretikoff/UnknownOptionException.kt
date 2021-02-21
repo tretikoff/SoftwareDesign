@@ -1,7 +1,7 @@
-package exceptions
+package ru.tretikoff
 
 /**
  * Indicates the flag given is not recognized
  */
 class UnknownOptionException(cmd: String, option: String) :
-    Exception("$cmd: unrecognized option '$option'")
+    CliException("$cmd: unrecognized option '$option'")

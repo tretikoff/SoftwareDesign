@@ -1,18 +1,21 @@
-import org.junit.Test
+package ru.tretikoff
+
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class EchoTest : BashTest() {
     @Test
-    fun echoStr() {
+    fun `echo string`() {
         val str = "hello"
         stdin.writeLine("echo $str")
-        main(emptyArray())
-        assert(stdout.read() == str)
+        main()
+        assertEquals(str, stdout.read())
     }
 
     @Test
-    fun echoEmpty() {
+    fun `echo empty string`() {
         stdin.writeLine("echo")
-        main(emptyArray())
+        main()
         assert(stdout.read().isNullOrEmpty())
     }
 }

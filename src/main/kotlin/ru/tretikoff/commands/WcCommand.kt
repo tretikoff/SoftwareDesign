@@ -1,9 +1,8 @@
-package commands
+package ru.tretikoff.commands
 
-import exceptions.NoSuchFileOrDirectoryException
-import streams.FileStream
-import streams.Stream
-import java.io.FileNotFoundException
+import ru.tretikoff.streams.FileStream
+import ru.tretikoff.streams.Stream
+import java.util.logging.Logger
 
 /**
  * The utility displays the number of lines, words, and bytes contained in each input file
@@ -22,14 +21,11 @@ class WcCommand(
     args: MutableList<String>,
 ) :
     Command(ins, out, err, args) {
+    private val logger = Logger.getLogger(WcCommand::class.java.name)
     override fun execute(): Int {
         for (filename in args) {
-            try {
-                val stream = FileStream(filename)
-                printLCW(stream)
-            } catch (e: FileNotFoundException) {
-                throw NoSuchFileOrDirectoryException("wc", filename)
-            }
+            val stream = FileStream(filename)
+            printLCW(stream, filename)
         }
         if (args.isEmpty()) {
             printLCW(inputStream)
@@ -37,19 +33,25 @@ class WcCommand(
         return 0
     }
 
-    private fun printLCW(stream: Stream) {
+    private fun printLCW(stream: Stream, filename: String? = null) {
         var l = 0
         var w = 0
         var c = 0
         while (true) {
             val b = stream.read()
+            logger.finest("wc: processing line $b")
             if (b == null) {
-                outputStream.writeLine("$l\t$w\t$c")
+                outputStream.writeLine(
+                    "$l\t$w\t$c" +
+                        if (!filename.isNullOrEmpty()) "\t$filename" else ""
+                )
                 return
             }
             c += b.length
-            w += b.split(" \n\t").size
-            l += 1
+            val words = b.split(" ", "\t").filter { x -> x.isNotEmpty() }
+            w += words.size
+            logger.finest("wc: processing words: ${words.joinToString(", ")}, ${words.size}")
+            l += if (b.isNotEmpty()) 1 else 0
         }
     }
 }

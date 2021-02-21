@@ -1,4 +1,6 @@
-import streams.Stream
+package ru.tretikoff
+
+import ru.tretikoff.streams.Stream
 import java.util.*
 import java.util.logging.Logger
 

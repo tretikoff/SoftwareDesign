@@ -1,4 +1,4 @@
-package streams
+package ru.tretikoff.streams
 
 /**
  * Stream in which information is read from the console and written to the console

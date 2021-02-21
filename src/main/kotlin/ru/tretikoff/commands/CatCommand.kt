@@ -1,9 +1,7 @@
-package commands
+package ru.tretikoff.commands
 
-import exceptions.NoSuchFileOrDirectoryException
-import streams.FileStream
-import streams.Stream
-import java.io.FileNotFoundException
+import ru.tretikoff.streams.FileStream
+import ru.tretikoff.streams.Stream
 import java.util.logging.Logger
 
 /**
@@ -22,12 +20,8 @@ class CatCommand(
         logger.finest("Running cat with arguments $args")
         if (args.isNotEmpty()) {
             for (filename in args) {
-                try {
-                    val stream = FileStream(filename)
-                    printToOutput(stream)
-                } catch (e: FileNotFoundException) {
-                    throw NoSuchFileOrDirectoryException("cat", filename)
-                }
+                val stream = FileStream(filename)
+                printToOutput(stream)
             }
         } else {
             printToOutput(inputStream)

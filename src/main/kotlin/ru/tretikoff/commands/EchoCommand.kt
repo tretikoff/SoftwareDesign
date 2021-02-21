@@ -1,6 +1,6 @@
-package commands
+package ru.tretikoff.commands
 
-import streams.Stream
+import ru.tretikoff.streams.Stream
 
 /**
  * The echo utility writes its arguments to standard output, followed by a <newline>.

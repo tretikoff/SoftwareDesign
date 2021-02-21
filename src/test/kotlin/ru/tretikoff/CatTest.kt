@@ -1,12 +1,15 @@
-import org.junit.Test
+package ru.tretikoff
+
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class CatTest : BashTest() {
     @Test
     fun catFileInput() {
         stdin.writeLine("cat test")
-        main(emptyArray())
+        main()
         for (line in fileContent) {
-            assert(stdout.read() == line)
+            assertEquals(line, stdout.read())
         }
     }
 }

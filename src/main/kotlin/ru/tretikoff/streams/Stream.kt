@@ -1,4 +1,4 @@
-package streams
+package ru.tretikoff.streams
 
 open class Stream {
     open fun read(): String? {

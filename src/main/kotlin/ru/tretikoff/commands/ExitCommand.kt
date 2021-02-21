@@ -1,6 +1,6 @@
-package commands
+package ru.tretikoff.commands
 
-import streams.Stream
+import ru.tretikoff.streams.Stream
 import kotlin.system.exitProcess
 
 /**
