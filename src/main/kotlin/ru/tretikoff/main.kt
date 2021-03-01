@@ -6,7 +6,6 @@ import ru.tretikoff.streams.Stream
 private val consoleStream: Stream = ConsoleStream()
 private val descriptors = mutableListOf(consoleStream, consoleStream, consoleStream)
 
-
 /**
  * The ru.tretikoff.main flow of bash
  */

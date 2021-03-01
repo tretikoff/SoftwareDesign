@@ -80,6 +80,9 @@ class Shell(
                 pipeIndexes.add(i)
             }
         }
+        if (!pipeIndexes.isEmpty() && pipeIndexes.last() == words.size - 1) {
+            throw SyntaxErrorException("`|`")
+        }
         return pipeIndexes
     }
 
