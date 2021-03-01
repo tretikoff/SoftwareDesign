@@ -7,7 +7,7 @@ class PipeTest : BashTest() {
     @Test
     fun `two commands pipe`() {
         stdin.writeLine("cat test | cat")
-        main()
+        shell.run()
         for (line in fileContent) {
             assertEquals(line, stdout.read())
         }
@@ -16,14 +16,14 @@ class PipeTest : BashTest() {
     @Test
     fun `pipe to wc`() {
         stdin.writeLine("cat test | wc")
-        main()
+        shell.run()
         assertEquals("3\t6\t32", stdout.read())
     }
 
     @Test
     fun `double pipe to wc`() {
         stdin.writeLine("cat test | wc | wc")
-        main()
+        shell.run()
         assertEquals("1\t3\t6", stdout.read())
     }
 }

@@ -15,12 +15,12 @@ private val logger = Logger.getLogger(Word::class.java.name)
  */
 class Word(var value: String, var quotationType: QuotationType = QuotationType.None) {
     fun substituteVariables(variables: Map<String, String>) {
-        logger.info("sadg")
+        logger.finest("sadg")
         while (true) {
             val regex = "\\$\\w+".toRegex()
             val match = regex.find(value) ?: return
             val replacement = variables[match.value.drop(1)] ?: ""
-            logger.info("replacing ${match.value} with $replacement in $value")
+            logger.finest("replacing ${match.value} with $replacement in $value")
             value = value.replace(regex, replacement)
         }
     }

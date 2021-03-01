@@ -9,7 +9,7 @@ class Parser {
     fun parse(statement: String): List<Word> {
         val statements = mutableListOf<Word>()
         val words = splitByQuotes(statement)
-        logger.info("Splitted $statement by quotes ${words.map { it.value }}")
+        logger.finest("Splitted $statement by quotes ${words.map { it.value }}")
         for (word in words) {
             if (word.quotationType == QuotationType.None) {
                 statements.addAll(splitBySpaces(word.value))
@@ -17,7 +17,7 @@ class Parser {
                 statements.add(word)
             }
         }
-        logger.info("Splitted $statement into ${statements.map { it.value }}")
+        logger.finest("Splitted $statement into ${statements.map { it.value }}")
         return statements
     }
 
@@ -59,7 +59,7 @@ class Parser {
                 }
             }
             var end = if (quote != null) rest.indexOf(quote, start + 1) else -1
-            logger.info("parsing $rest from the $start to the $end")
+            logger.finest("parsing $rest from the $start to the $end")
             if (end == -1) end = rest.length
             val word = rest.substring(start + 1, end).trim()
             words.add(Word(word, quotationType))

@@ -1,13 +1,9 @@
 package ru.tretikoff.streams
 
-open class Stream {
-    open fun read(): String? {
-        throw NotImplementedError()
-    }
+abstract class Stream {
+    abstract fun read(): String?
 
-    open fun write(statement: String?) {
-        throw NotImplementedError()
-    }
+    abstract fun write(statement: String?)
 
     open fun writeLine(statement: String?) {
         write(statement)

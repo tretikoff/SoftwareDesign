@@ -10,9 +10,9 @@ open class BashTest {
     val stdin = PipeStream()
     val stdout = PipeStream()
     val stderr = PipeStream()
+    val shell = Shell(listOf(stdin, stdout, stderr), inviteSymbol = "", exitOnExceptions = true)
 
     init {
-        shell = Shell(listOf(stdin, stdout, stderr), inviteSymbol = "", exitOnExceptions = true)
         tempFile.deleteOnExit()
         for (line in fileContent) {
             tempFile.writeText(line)

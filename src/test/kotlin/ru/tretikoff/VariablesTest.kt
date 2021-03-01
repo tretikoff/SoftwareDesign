@@ -9,7 +9,7 @@ class VariablesTest : BashTest() {
     fun `set variable`() {
         stdin.writeLine("var=test")
         stdin.writeLine("cat \$var")
-        main()
+        shell.run()
         for (line in fileContent) {
             assertEquals(line, stdout.read())
         }

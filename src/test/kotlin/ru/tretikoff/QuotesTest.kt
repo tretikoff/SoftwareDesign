@@ -8,7 +8,7 @@ class QuotesTest : BashTest() {
     fun `single quote string`() {
         val str = "hello"
         stdin.writeLine("echo '$str'")
-        main()
+        shell.run()
         assertEquals(str, stdout.read())
     }
 
@@ -16,7 +16,7 @@ class QuotesTest : BashTest() {
     fun `double quote string`() {
         val str = "hello"
         stdin.writeLine("echo \"$str\"")
-        main()
+        shell.run()
         assertEquals(str, stdout.read())
     }
 
@@ -25,7 +25,7 @@ class QuotesTest : BashTest() {
         val str = "hello"
         stdin.writeLine("str=$str")
         stdin.writeLine("echo \"\$str\"")
-        main()
+        shell.run()
         assertEquals(str, stdout.read())
     }
     @Test
@@ -33,7 +33,7 @@ class QuotesTest : BashTest() {
         val str = "hello"
         stdin.writeLine("str=$str")
         stdin.writeLine("echo \"\$str\"")
-        main()
+        shell.run()
         assertEquals(str, stdout.read())
     }
 }

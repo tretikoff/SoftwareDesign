@@ -28,11 +28,11 @@ class Shell(
         while (true) {
             stdout.write(inviteSymbol)
             val statement = stdin.read() ?: return
-            logger.info(statement)
+            logger.finest(statement)
             if (trySetupVariable(statement)) continue
             val words = parser.parse(statement)
 
-            logger.info(words.joinToString(", ") { it.value })
+            logger.finest(words.joinToString(", ") { it.value })
             words.filter { it.quotationType != QuotationType.SingleQuoted }
                 .forEach { it.substituteVariables(variables) }
 
@@ -45,13 +45,27 @@ class Shell(
                     executePipedStatements(words, pipeIndexes)
                 }
             } catch (e: CommandNotFoundException) {
-                ExternalCommand(stdin, stdout, stderr, mutableListOf(statement), e.cmd).execute()
+                try {
+                    ExternalCommand(
+                        stdin,
+                        stdout,
+                        stderr,
+                        mutableListOf(statement),
+                        e.cmd
+                    ).execute()
+                } catch (e: CommandNotFoundException) {
+                    handleException(e)
+                }
             } catch (e: CliException) {
-                logger.severe(e.localizedMessage)
-                stderr.writeLine(e.localizedMessage)
-                if (exitOnExceptions) throw e
+                handleException(e)
             }
         }
+    }
+
+    private fun handleException(e: CliException) {
+        logger.severe(e.localizedMessage)
+        stderr.writeLine(e.localizedMessage)
+        if (exitOnExceptions) throw e
     }
 
     private fun extractPipes(words: List<Word>): List<Int> {

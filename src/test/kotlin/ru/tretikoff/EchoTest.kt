@@ -8,14 +8,14 @@ class EchoTest : BashTest() {
     fun `echo string`() {
         val str = "hello"
         stdin.writeLine("echo $str")
-        main()
+        shell.run()
         assertEquals(str, stdout.read())
     }
 
     @Test
     fun `echo empty string`() {
         stdin.writeLine("echo")
-        main()
+        shell.run()
         assert(stdout.read().isNullOrEmpty())
     }
 }

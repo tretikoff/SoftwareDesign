@@ -7,7 +7,7 @@ class CatTest : BashTest() {
     @Test
     fun catFileInput() {
         stdin.writeLine("cat test")
-        main()
+        shell.run()
         for (line in fileContent) {
             assertEquals(line, stdout.read())
         }
