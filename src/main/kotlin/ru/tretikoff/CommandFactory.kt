@@ -30,7 +30,7 @@ class CommandFactory private constructor() {
                 "echo" -> EchoCommand(ins, outs, errs, args)
                 "pwd" -> PwdCommand(ins, outs, errs, args)
                 "wc" -> WcCommand(ins, outs, errs, args)
-                else -> throw CommandNotFoundException(tokens[0])
+                else -> ExternalCommand(ins, outs, errs, tokens.toMutableList(), tokens.first())
             }
             checkKeys(command, words)
 
