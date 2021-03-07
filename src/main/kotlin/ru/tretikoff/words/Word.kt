@@ -21,7 +21,7 @@ class Word(var value: String, var quotationType: QuotationType = QuotationType.N
             val match = regex.find(value) ?: return
             val replacement = variables[match.value.drop(1)] ?: ""
             logger.finest("replacing ${match.value} with $replacement in $value")
-            value = value.replace(regex, replacement)
+            value = value.replaceRange(match.range, replacement)
         }
     }
 
