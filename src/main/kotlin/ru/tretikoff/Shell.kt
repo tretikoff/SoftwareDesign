@@ -44,18 +44,6 @@ class Shell(
                 } else {
                     executePipedStatements(words, pipeIndexes)
                 }
-            } catch (e: CommandNotFoundException) {
-                try {
-                    ExternalCommand(
-                        stdin,
-                        stdout,
-                        stderr,
-                        mutableListOf(statement),
-                        e.cmd
-                    ).execute()
-                } catch (e: CommandNotFoundException) {
-                    handleException(e)
-                }
             } catch (e: CliException) {
                 handleException(e)
             }
