@@ -1,6 +1,5 @@
 package ru.tretikoff
 
-import ru.tretikoff.commands.ExternalCommand
 import ru.tretikoff.streams.Stream
 import ru.tretikoff.words.QuotationType
 import ru.tretikoff.words.Word
