@@ -1,6 +1,5 @@
 package ru.tretikoff.commands
 
-import ru.tretikoff.streams.ConsoleStream
 import ru.tretikoff.streams.FileStream
 import ru.tretikoff.streams.Stream
 import java.util.logging.Logger
@@ -66,7 +65,7 @@ class GrepCommand(
             return 1
         }
         val search = args[0]
-        val stream: Stream = if (args.size > 1) FileStream(args[1]) else ConsoleStream()
+        val stream: Stream = if (args.size > 1) FileStream(args[1]) else inputStream
         runPatternSearch(stream, search)
         return 0
     }
