@@ -46,8 +46,10 @@
 
 ### Документация
 
-![Диаграмма случаев использования]
+#### Диаграмма случаев использования
+![Диаграмма случаев использования](src/main/resources/UML/use_case_diagram.png)
 
+#### Диаграмма компонентов
 ![Диаграмма компонентов](src/main/resources/UML/components_diagram.png)
-
-![Диаграммы последовательностей](src/main/resources/UML/sequence_diagram.png)
+#### Диаграммы последовательностей
+![Диаграмма последовательностей](src/main/resources/UML/sequence_diagram.png)
