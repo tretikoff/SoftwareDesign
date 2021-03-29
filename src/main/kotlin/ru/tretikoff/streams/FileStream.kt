@@ -20,7 +20,11 @@ open class FileStream(filename: String) : Stream() {
 
     init {
         try {
-            file = File(filename)
+            var parent = ""
+            if (!filename.startsWith("/")) {
+                parent = System.getProperty("user.dir")
+            }
+            file = File(parent, filename).getAbsoluteFile()
             outputStream = FileOutputStream(file, true)
             br = file.inputStream().bufferedReader()
         } catch (e: FileNotFoundException) {
