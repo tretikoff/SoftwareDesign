@@ -1,8 +1,10 @@
 package ru.tretikoff
 
 import ru.tretikoff.commands.CatCommand
+import ru.tretikoff.commands.CdCommand
 import ru.tretikoff.commands.Command
 import ru.tretikoff.commands.EchoCommand
+import ru.tretikoff.commands.LsCommand
 import ru.tretikoff.commands.ExitCommand
 import ru.tretikoff.commands.ExternalCommand
 import ru.tretikoff.commands.GrepCommand
@@ -33,6 +35,8 @@ class CommandFactory private constructor() {
                 "pwd" -> PwdCommand(ins, outs, errs, args)
                 "wc" -> WcCommand(ins, outs, errs, args)
                 "grep" -> GrepCommand(ins, outs, errs, args)
+                "ls" -> LsCommand(ins, outs, errs, args)
+                "cd" -> CdCommand(ins, outs, errs, args)
                 else -> ExternalCommand(ins, outs, errs, tokens.toMutableList(), tokens.first())
             }
             checkKeys(command, words)
