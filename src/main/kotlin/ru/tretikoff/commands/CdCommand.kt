@@ -1,10 +1,8 @@
 package ru.tretikoff.commands
 
-import ru.tretikoff.streams.FileStream
 import ru.tretikoff.streams.Stream
-import java.util.logging.Logger
 import java.io.File
-
+import java.util.logging.Logger
 
 class CdCommand(
     ins: Stream,
@@ -27,7 +25,7 @@ class CdCommand(
         }
     }
 
-    private fun cdPath(path: String) : Int {
+    private fun cdPath(path: String): Int {
         val file = File(path).getAbsoluteFile()
         if (!file.exists()) {
             errorStream.writeLine("no such directory: \"$path\"")

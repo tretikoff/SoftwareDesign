@@ -1,10 +1,8 @@
 package ru.tretikoff.commands
 
-import ru.tretikoff.streams.FileStream
 import ru.tretikoff.streams.Stream
-import java.util.logging.Logger
 import java.io.File
-
+import java.util.logging.Logger
 
 class LsCommand(
     ins: Stream,
@@ -27,9 +25,13 @@ class LsCommand(
         }
     }
 
-    private fun lsPath(path: String) : Int {
-        val file = File(path).getAbsoluteFile()
-        var files = file.list()
+    private fun lsPath(path: String): Int {
+        var parent = ""
+        if (!path.startsWith("/")) {
+            parent = System.getProperty("user.dir")
+        }
+        val file = File(parent, path).getAbsoluteFile()
+        val files = file.list()
         if (!file.exists()) {
             errorStream.writeLine("no such file or directory: \"$path\"")
             return 2

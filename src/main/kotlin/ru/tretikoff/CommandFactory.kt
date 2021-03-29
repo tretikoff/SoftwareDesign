@@ -4,10 +4,10 @@ import ru.tretikoff.commands.CatCommand
 import ru.tretikoff.commands.CdCommand
 import ru.tretikoff.commands.Command
 import ru.tretikoff.commands.EchoCommand
-import ru.tretikoff.commands.LsCommand
 import ru.tretikoff.commands.ExitCommand
 import ru.tretikoff.commands.ExternalCommand
 import ru.tretikoff.commands.GrepCommand
+import ru.tretikoff.commands.LsCommand
 import ru.tretikoff.commands.PwdCommand
 import ru.tretikoff.commands.WcCommand
 import ru.tretikoff.streams.Stream

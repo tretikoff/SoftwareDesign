@@ -3,6 +3,7 @@ package ru.tretikoff.commands
 import ru.tretikoff.CommandNotFoundException
 import ru.tretikoff.streams.Stream
 import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.logging.Logger
@@ -23,7 +24,7 @@ class ExternalCommand(
 
     override fun execute(): Int {
         try {
-            val p = Runtime.getRuntime().exec(args[0])
+            val p = Runtime.getRuntime().exec(args[0], null, File(System.getProperty("user.dir")))
             p.waitFor()
             val stdInput = BufferedReader(InputStreamReader(p.inputStream))
             val stdError = BufferedReader(InputStreamReader(p.errorStream))
